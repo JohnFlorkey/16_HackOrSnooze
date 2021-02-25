@@ -73,20 +73,28 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
+  async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
-    const postBody = {
-      'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRQZXR0eSIsImlhdCI6MTYxNDA1MjA2NX0.QiFOq1XUp5gtgKbAh8CPL97jw2gdQBjGUm5sRPIMypw',
-      'story':{
-        'author': 'Tom Petty', 
-        'title': 'Damn The Torpedoes', 
-        'url': 'https://en.wikipedia.org/wiki/Damn_the_Torpedoes_(album)'}
-      }
     const response = await axios.post(
       `${BASE_URL}/stories`,
-      postBody
+      {
+        'token': user.loginToken,
+        'story':{
+          'author': newStory.author, 
+          'title': newStory.title, 
+          'url': newStory.url}
+      }
     )
-    return response.data;
+    const data = response.data.story;
+    const story = {
+      'storyId': data.storyId, 
+      'title': data.title, 
+      'author': data.author, 
+      'url': data.url, 
+      'username': data.username, 
+      'createdAt': data.createdAt
+    }
+    return new Story(story)
   }
 }
 
