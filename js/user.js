@@ -116,3 +116,32 @@ function updateUIOnUserLogin() {
 
   updateNavOnLogin();
 }
+
+// Allow the user to (un)favorite a story
+
+async function favoriteStoryToggle(storyId) {
+  const favoriteURL = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`
+
+  function _refreshFavorites(newFavorites) {
+    currentUser.favorites = []
+    currentUser.favorites = newFavorites.map(s => new Story(s));
+  }
+  if(currentUser.favorites.some(story => story.storyId === storyId)) {
+    // delete
+    console.debug('deleting favorite', storyId);
+
+    const response = await axios.delete(
+      `${favoriteURL}?token=${currentUser.loginToken}`
+    )
+    _refreshFavorites(response.data.user.favorites);
+  } else {
+    // post
+    console.debug('adding favorite', storyId);
+    let response = await axios.post(
+      favoriteURL,
+      {'token': currentUser.loginToken}
+    )
+    console.log(response);
+    _refreshFavorites(response.data.user.favorites);
+  }
+}
