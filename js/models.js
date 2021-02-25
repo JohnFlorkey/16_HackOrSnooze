@@ -75,6 +75,18 @@ class StoryList {
 
   async addStory( /* user, newStory */) {
     // UNIMPLEMENTED: complete this function!
+    const postBody = {
+      'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRQZXR0eSIsImlhdCI6MTYxNDA1MjA2NX0.QiFOq1XUp5gtgKbAh8CPL97jw2gdQBjGUm5sRPIMypw',
+      'story':{
+        'author': 'Tom Petty', 
+        'title': 'Damn The Torpedoes', 
+        'url': 'https://en.wikipedia.org/wiki/Damn_the_Torpedoes_(album)'}
+      }
+    const response = await axios.post(
+      `${BASE_URL}/stories`,
+      postBody
+    )
+    return response.data;
   }
 }
 
