@@ -50,3 +50,23 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+// Get user input from new story form and post new story
+
+async function addStoryClick(evt) {
+  console.debug('addStoryClick', evt);
+  evt.preventDefault();
+
+  const newStory = {
+    'title': $('#new-story-title').val(),
+    'author': $('#new-story-author').val(),
+    'url': $('#new-story-url').val()
+  };
+  $('#new-story-title').val('');
+  $('#new-story-author').val('');
+  $('#new-story-url').val('');
+  await storyList.addStory(currentUser, newStory);
+  getAndShowStoriesOnStart();
+}
+
+$newStoryForm.on('submit',addStoryClick);
