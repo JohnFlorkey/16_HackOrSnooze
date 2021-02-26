@@ -141,7 +141,6 @@ async function favoriteStoryToggle(storyId) {
       favoriteURL,
       {'token': currentUser.loginToken}
     )
-    console.log(response);
     _refreshFavorites(response.data.user.favorites);
   }
 }
