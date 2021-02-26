@@ -25,7 +25,14 @@ class Story {
 
   getHostName() {
     // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    let noProtocol = this.url.replace('https://','').replace('http://', '');
+    let hostname = ''
+    if(noProtocol.indexOf('/') > -1) {
+      hostname = noProtocol.slice(0,noProtocol.indexOf('/'));  
+    } else {
+      hostname = noProtocol;
+    }
+    return hostname;
   }
 }
 
