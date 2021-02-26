@@ -143,4 +143,5 @@ async function favoriteStoryToggle(storyId) {
     )
     _refreshFavorites(response.data.user.favorites);
   }
+  return true;
 }

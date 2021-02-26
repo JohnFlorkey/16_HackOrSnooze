@@ -34,6 +34,12 @@ class Story {
     }
     return hostname;
   }
+
+  // determine if the story is one of the user's favorites
+
+  isFavorite () {
+    return (currentUser.favorites.find(favorite => favorite.storyId === this.storyId)) ? 'fas' : 'far';
+  }
 }
 
 
