@@ -95,3 +95,7 @@ async function handleFavoriteClick(evt) {
 }
 
 $allStoriesList.on('click', 'i', handleFavoriteClick)
+
+function removeStory(storyId) {
+  $(`#${storyId}`).remove();
+}
