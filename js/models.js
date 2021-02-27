@@ -227,34 +227,64 @@ class User {
     }
   }
 
-  // Allow the user to (un)favorite a story
-
-  async favoriteStoryToggle(storyId) {
-    const favoriteURL = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`
-
-    function _refreshFavorites(newFavorites) {
-      currentUser.favorites = []
-      currentUser.favorites = newFavorites.map(s => new Story(s));
+  // Allow the user to favorite a story
+  async addFavorite (storyId) {
+    const favoriteURL = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`;
+    
+    // post
+    console.debug('adding favorite', storyId);
+    
+    const response = await axios.post(favoriteURL, {'token': currentUser.loginToken});
+    const postSuccess = response.statusText === 'OK' ? true : false;
+    if(postSuccess) {
+      currentUser.favorites = response.data.user.favorites.map(s => new Story(s));
     }
-    if(currentUser.favorites.some(story => story.storyId === storyId)) {
-      // delete
-      console.debug('deleting favorite', storyId);
-
-      const response = await axios.delete(
-        `${favoriteURL}?token=${currentUser.loginToken}`
-      )
-      _refreshFavorites(response.data.user.favorites);
-    } else {
-      // post
-      console.debug('adding favorite', storyId);
-      let response = await axios.post(
-        favoriteURL,
-        {'token': currentUser.loginToken}
-      )
-      _refreshFavorites(response.data.user.favorites);
-    }
-    return true;
+    return postSuccess;
   }
+
+  // Allow the user to unfavorite a story
+  async removeFavorite (storyId) {
+    const favoriteURL = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`;
+    
+    // post
+    console.debug('deleting favorite', storyId);
+    
+    let response = await axios.delete(`${favoriteURL}?token=${currentUser.loginToken}`);
+    const deleteSuccess = response.statusText === 'OK' ? true : false;
+    if(deleteSuccess) {
+      currentUser.favorites = response.data.user.favorites.map(s => new Story(s));
+    }
+    return deleteSuccess;
+  }
+
+  // async favoriteStoryToggle(storyId) {
+  //   const favoriteURL = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`
+  //   let response = '';
+
+  //   const favoriteStoryIndex = currentUser.favorites.findIndex(favorite => favorite.storyId === storyId);
+  //   const favoriteData = {
+  //     'isCurrentlyFavorite': (favoriteStoryIndex > -1) ? true : false,
+  //     favoriteStoryIndex
+  //   };
+  //   if(favoriteData.isCurrentlyFavorite) {
+  //     // already a favorite so delete
+  //     console.debug('deleting favorite', storyId);
+
+  //     let response = await axios.delete(`${favoriteURL}?token=${currentUser.loginToken}`);
+  //     if(response.statusText === 'OK') { // make sure the unfavorite was recorded on the server
+  //       currentUser.favorites = response.data.user.favorites.map(s => new Story(s));
+  //     }
+  //   } else {
+  //     // post
+  //     console.debug('adding favorite', storyId);
+      
+  //     let response = await axios.post(favoriteURL, {'token': currentUser.loginToken});
+  //     if(response.statusText === 'OK') {
+  //       currentUser.favorites = response.data.user.favorites.map(s => new Story(s));
+  //     }
+  //   }
+  //   return response.statusText === 'OK' ? true : false;
+  // }
 
   // Allow user to delete one of their stories
 

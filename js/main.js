@@ -17,6 +17,8 @@ const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
 const $navSubmit = $('#nav-submit');
 const $navFavorite = $('#nav-favorite');
+const $navMyStories = $('#nav-my-stories');
+const $navUser = $('#nav-user');
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -52,4 +54,8 @@ console.warn("HEY STUDENT: This program sends many debug messages to" +
   " the console. If you don't see the message 'start' below this, you're not" +
   " seeing those helpful debug messages. In your browser console, click on" +
   " menu 'Default Levels' and add Verbose");
+
+// no logged in user on DOM load so, the user nav options should be hidden
+$navUser.hide();
+
 $(start);

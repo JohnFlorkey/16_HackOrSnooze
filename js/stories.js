@@ -25,7 +25,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
-      <i class="${story.isFavorite()} fa-star"></i>
+      <i class="far fa-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -79,19 +79,42 @@ function putFavoritesOnPage() {
 async function handleFavoriteClick(evt) {
   const $favIcon = $(evt.target);
   console.log($favIcon);
+  
   const storyId = $favIcon.parent().attr('id');
   console.log(storyId);
-  const favoriteSuccess = await favoriteStoryToggle(storyId);
 
-  if(favoriteSuccess) {
-    if($favIcon.hasClass('far')) {
-      $favIcon.removeClass('far');
-      $favIcon.addClass('fas');
-    } else {
-      $favIcon.removeClass('fas');
-      $favIcon.addClass('far');
+  const favoriteStoryIndex = currentUser.favorites.findIndex(favorite => favorite.storyId === storyId);
+  const isCurrentlyFavorite = (favoriteStoryIndex > -1) ? true : false
+  if(isCurrentlyFavorite) {
+    if(await currentUser.removeFavorite(storyId) === true){
+      // update icon
+      if($favIcon.hasClass('fas')) {
+        $favIcon.removeClass('fas');
+        $favIcon.addClass('far');
+      }
+    };
+  } else {
+    if(await currentUser.addFavorite(storyId) === true) {
+      // update icon
+      if($favIcon.hasClass('far')) {
+        $favIcon.removeClass('far');
+        $favIcon.addClass('fas');
+      }
     }
   }
+
+  
+  // const favoriteSuccess = await currentUser.favoriteStoryToggle(storyId);
+
+  // if(favoriteSuccess) {
+  //   if($favIcon.hasClass('far')) {
+  //     $favIcon.removeClass('far');
+  //     $favIcon.addClass('fas');
+  //   } else {
+  //     $favIcon.removeClass('fas');
+  //     $favIcon.addClass('far');
+  //   }
+  // }
 }
 
 $allStoriesList.on('click', 'i', handleFavoriteClick)

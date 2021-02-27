@@ -33,7 +33,7 @@ function updateNavOnLogin() {
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
-  $navFavorite.show();
+  $navUser.show();
 }
 
 /** Show new story form on click on "submit"*/
