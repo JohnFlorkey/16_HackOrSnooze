@@ -98,16 +98,19 @@ class StoryList {
           'url': newStory.url}
       }
     )
-    const data = response.data.story;
-    const story = {
-      'storyId': data.storyId, 
-      'title': data.title, 
-      'author': data.author, 
-      'url': data.url, 
-      'username': data.username, 
-      'createdAt': data.createdAt
+    if(response.statusText === 'Created') {
+      const data = response.data.story;
+      const story = {
+        'storyId': data.storyId, 
+        'title': data.title, 
+        'author': data.author, 
+        'url': data.url, 
+        'username': data.username, 
+        'createdAt': data.createdAt
+      }
+      this.stories.unshift(new Story(story));
     }
-    return new Story(story)
+    // return new Story(story)
   }
 }
 

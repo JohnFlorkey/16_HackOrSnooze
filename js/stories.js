@@ -71,7 +71,8 @@ async function addStoryClick(evt) {
   $('#new-story-author').val('');
   $('#new-story-url').val('');
   await storyList.addStory(currentUser, newStory);
-  getAndShowStoriesOnStart();
+  hidePageComponents();
+  putStoriesOnPage(storyList.stories);
 }
 
 $newStoryForm.on('submit',addStoryClick);
