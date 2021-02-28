@@ -10,6 +10,10 @@ async function getAndShowStoriesOnStart() {
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage(storyList.stories);
+  $('.delete').hide();                  // delete not available from main stories view
+  if(!currentUser) {                    // if there is no logged in user hide the favorite icons
+    $('.favorite').hide();
+  }
 }
 
 /**
@@ -21,7 +25,7 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-
+  
   const hostName = story.getHostName();
   let favoriteStatus = 'far';           // default favorite status is not a favorite (far)
   if(currentUser){                      // if there is a logged in user determine whether or not the story is one of their favorites
@@ -30,7 +34,8 @@ function generateStoryMarkup(story) {
   
   return $(`
       <li id="${story.storyId}">
-      <i class="${favoriteStatus} fa-star"></i>
+      <i class="favorite ${favoriteStatus} fa-star"></i>
+      <i class="delete fas fa-trash-alt"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -73,13 +78,13 @@ async function addStoryClick(evt) {
   await storyList.addStory(currentUser, newStory);
   hidePageComponents();
   putStoriesOnPage(storyList.stories);
+  $('.delete').hide();                  // delete not available from main stories view
+  if(!currentUser) {                    // if there is no logged in user hide the favorite icons
+    $('.favorite').hide();
+  }
 }
 
 $newStoryForm.on('submit',addStoryClick);
-
-function putFavoritesOnPage() {
-    putStoriesOnPage(currentUser.favorites);
-}
 
 async function handleFavoriteClick(evt) {
   const $favIcon = $(evt.target);
@@ -114,6 +119,10 @@ $allStoriesList.on('click', 'i', handleFavoriteClick)
 function handleMyStoriesClick() {
   console.debug('clicked my stories')
   putStoriesOnPage(currentUser.ownStories);
+  $('.delete').show();                  // delete not available from main stories view
+  if(!currentUser) {                    // if there is no logged in user hide the favorite icons
+    $('.favorite').hide();
+  }
 }
 
 $navMyStories.on('click', handleMyStoriesClick)
