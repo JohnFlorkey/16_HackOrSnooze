@@ -109,6 +109,7 @@ class StoryList {
         'createdAt': data.createdAt
       }
       this.stories.unshift(new Story(story));
+      currentUser.ownStories.unshift(new Story(story));   // not sure this belonmgs here. might be better as a user method?
     }
     // return new Story(story)
   }
@@ -260,35 +261,6 @@ class User {
     return deleteSuccess;
   }
 
-  // async favoriteStoryToggle(storyId) {
-  //   const favoriteURL = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`
-  //   let response = '';
-
-  //   const favoriteStoryIndex = currentUser.favorites.findIndex(favorite => favorite.storyId === storyId);
-  //   const favoriteData = {
-  //     'isCurrentlyFavorite': (favoriteStoryIndex > -1) ? true : false,
-  //     favoriteStoryIndex
-  //   };
-  //   if(favoriteData.isCurrentlyFavorite) {
-  //     // already a favorite so delete
-  //     console.debug('deleting favorite', storyId);
-
-  //     let response = await axios.delete(`${favoriteURL}?token=${currentUser.loginToken}`);
-  //     if(response.statusText === 'OK') { // make sure the unfavorite was recorded on the server
-  //       currentUser.favorites = response.data.user.favorites.map(s => new Story(s));
-  //     }
-  //   } else {
-  //     // post
-  //     console.debug('adding favorite', storyId);
-      
-  //     let response = await axios.post(favoriteURL, {'token': currentUser.loginToken});
-  //     if(response.statusText === 'OK') {
-  //       currentUser.favorites = response.data.user.favorites.map(s => new Story(s));
-  //     }
-  //   }
-  //   return response.statusText === 'OK' ? true : false;
-  // }
-
   // Allow user to delete one of their stories
 
   async deleteStory(storyId) {
@@ -300,6 +272,8 @@ class User {
     console.log(response);
 
     if(response.statusText === 'OK'){
+      // remove story from storyList.stories
+      // remove story from user.ownStories
       // remove from DOM
       removeStory(storyId);
     }

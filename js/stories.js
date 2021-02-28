@@ -109,21 +109,14 @@ async function handleFavoriteClick(evt) {
   }
 }
 
-  
-  // const favoriteSuccess = await currentUser.favoriteStoryToggle(storyId);
-
-  // if(favoriteSuccess) {
-  //   if($favIcon.hasClass('far')) {
-  //     $favIcon.removeClass('far');
-  //     $favIcon.addClass('fas');
-  //   } else {
-  //     $favIcon.removeClass('fas');
-  //     $favIcon.addClass('far');
-  //   }
-  // }
-
-
 $allStoriesList.on('click', 'i', handleFavoriteClick)
+
+function handleMyStoriesClick() {
+  console.debug('clicked my stories')
+  putStoriesOnPage(currentUser.ownStories);
+}
+
+$navMyStories.on('click', handleMyStoriesClick)
 
 function removeStory(storyId) {
   $(`#${storyId}`).remove();
