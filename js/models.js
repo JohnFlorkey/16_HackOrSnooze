@@ -37,8 +37,8 @@ class Story {
 
   // determine if the story is one of the user's favorites
 
-  isFavorite () {
-    return (currentUser.favorites.find(favorite => favorite.storyId === this.storyId)) ? 'fas' : 'far';
+  getFavoriteStatus () {      // if the story appears in the user's favorites return the favorite class=fas if not found return far (not a favorite)
+    return (currentUser.favorites.some(favorite => favorite.storyId === this.storyId)) ? 'fas' : 'far';
   }
 }
 

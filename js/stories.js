@@ -23,9 +23,14 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  let favoriteStatus = 'far';           // default favorite status is not a favorite (far)
+  if(currentUser){                      // if there is a logged in user determine whether or not the story is one of their favorites
+    favoriteStatus = story.getFavoriteStatus();     // class=far is not a favorite, class=fas is a favorite
+  }
+  
   return $(`
       <li id="${story.storyId}">
-      <i class="far fa-star"></i>
+      <i class="${favoriteStatus} fa-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -48,7 +53,6 @@ function putStoriesOnPage(stories) {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
-
   $allStoriesList.show();
 }
 
@@ -92,7 +96,7 @@ async function handleFavoriteClick(evt) {
         $favIcon.removeClass('fas');
         $favIcon.addClass('far');
       }
-    };
+    }
   } else {
     if(await currentUser.addFavorite(storyId) === true) {
       // update icon
@@ -102,6 +106,7 @@ async function handleFavoriteClick(evt) {
       }
     }
   }
+}
 
   
   // const favoriteSuccess = await currentUser.favoriteStoryToggle(storyId);
@@ -115,7 +120,7 @@ async function handleFavoriteClick(evt) {
   //     $favIcon.addClass('far');
   //   }
   // }
-}
+
 
 $allStoriesList.on('click', 'i', handleFavoriteClick)
 
