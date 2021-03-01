@@ -114,7 +114,7 @@ async function handleFavoriteClick(evt) {
   }
 }
 
-$allStoriesList.on('click', 'i', handleFavoriteClick)
+$allStoriesList.on('click', '.favorite', handleFavoriteClick)
 
 function handleMyStoriesClick() {
   console.debug('clicked my stories')
@@ -125,8 +125,16 @@ function handleMyStoriesClick() {
   }
 }
 
-$navMyStories.on('click', handleMyStoriesClick)
+$navMyStories.on('click', handleMyStoriesClick);
 
-function removeStory(storyId) {
+async function handleRemoveStoryClick(evt) {
+  console.debug('clicked remove story');
+  const storyId = $(evt.target).parent().attr('id');
+  console.log(storyId);
+  // remove story from API and local
+  await storyList.removeStory(storyId);
+  // remove story from DOM
   $(`#${storyId}`).remove();
 }
+
+$allStoriesList.on('click', '.delete', handleRemoveStoryClick);

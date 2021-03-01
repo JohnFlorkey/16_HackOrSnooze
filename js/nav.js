@@ -10,6 +10,10 @@ function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
   putStoriesOnPage(storyList.stories);
+  $('.delete').hide();                  // delete not available from main stories view
+  if(!currentUser) {                    // if there is no logged in user hide the favorite icons
+    $('.favorite').hide();
+  }
 }
 
 $body.on("click", "#nav-all", navAllStories);
@@ -52,6 +56,10 @@ function navFavoriteClick(evt) {
   console.debug('navFavoriteClick', evt);
   hidePageComponents();
   putStoriesOnPage(currentUser.favorites);
+  $('.delete').hide();                  // delete not available from main stories view
+  if(!currentUser) {                    // if there is no logged in user hide the favorite icons
+    $('.favorite').hide();
+  }
 }
 
 $navFavorite.on('click', navFavoriteClick);

@@ -111,6 +111,8 @@ function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
 
   $allStoriesList.show();
+  $('.delete').hide();                  // delete not available from main stories view
+  $('.favorite').show();                // we have a logged in user so show the favorite icons
   $loginForm.hide();
   $signupForm.hide();
 

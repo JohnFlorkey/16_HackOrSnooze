@@ -111,7 +111,24 @@ class StoryList {
       this.stories.unshift(new Story(story));
       currentUser.ownStories.unshift(new Story(story));   // not sure this belonmgs here. might be better as a user method?
     }
-    // return new Story(story)
+  }
+
+  async removeStory(storyId) {
+    const deleteStoryURL = `${BASE_URL}/stories/${storyId}?token=${currentUser.loginToken}`
+    // delete the story from the server
+    const response = await axios.delete(deleteStoryURL);
+    console.log(response);
+    if(response.statusText === 'OK') {    // if the delete on the server was a success delete locally
+      // remove from storyList stories array
+      storyList.stories.splice(storyList.stories.findIndex(story => story.storyId === storyId),1);
+      // remove from user ownStories array
+      currentUser.ownStories.splice(currentUser.ownStories.findIndex(story => story.storyId === storyId),1);
+      // check the user's favorites and remove it exists
+      const favoritesIndex = currentUser.favorites.findIndex(favorite => favorite.storyId === storyId)
+      if(favoritesIndex > -1) {
+        currentUser.favorites.splice(favoritesIndex,1);
+      }
+    }
   }
 }
 
