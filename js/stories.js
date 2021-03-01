@@ -120,9 +120,7 @@ function handleMyStoriesClick() {
   console.debug('clicked my stories')
   putStoriesOnPage(currentUser.ownStories);
   $('.delete').show();                  // delete not available from main stories view
-  if(!currentUser) {                    // if there is no logged in user hide the favorite icons
-    $('.favorite').hide();
-  }
+  $('.favorite').hide();              // if there is no logged in user hide the favorite icons
 }
 
 $navMyStories.on('click', handleMyStoriesClick);

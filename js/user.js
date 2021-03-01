@@ -110,7 +110,8 @@ function saveUserCredentialsInLocalStorage() {
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
 
-  $allStoriesList.show();
+  putStoriesOnPage(storyList.stories);
+
   $('.delete').hide();                  // delete not available from main stories view
   $('.favorite').show();                // we have a logged in user so show the favorite icons
   $loginForm.hide();

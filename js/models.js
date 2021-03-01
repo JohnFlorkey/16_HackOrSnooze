@@ -181,7 +181,7 @@ class User {
 
     return new User(
       {
-        username: uer.username,
+        username: user.username,
         name: user.name,
         createdAt: user.createdAt,
         favorites: user.favorites,
